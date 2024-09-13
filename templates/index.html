@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xdthisismemelolok</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.3/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script>
+console.log(`%c ╱|、
+(˚ˎ 。7  
+|、˜〵          
+じしˍ,)ノ uwu`, 'font-size: 13px; color: #8F8F94')
+function translation() {
+    const resultElement = document.getElementById('result');
+    resultElement.innerHTML = `<span class="loading loading-spinner loading-md"></span>`;
+    
+    const inputText = document.getElementById("inputText").value;
+    const reverse = document.getElementById('reverseCheckbox').checked;
+    const ai = document.getElementById('ai').checked;
+    const old = document.getElementById('oldType').checked;
+    const dub = document.getElementById('dub').checked;
+
+    const data = {
+        text: inputText,
+        reverse: reverse,
+        old: old,
+        dub: dub,
+        ai: ai,
+    };
+
+    var apiUrl = window.location.origin + '/api/';
+    var translationUrl = apiUrl + '/translate';
+
+    fetch(translationUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.translated_text) {
+            resultElement.innerHTML = ``;
+        } else {
+            resultElement.innerHTML = `<strong>Перевод:</strong><br>${data.translated_text}`;
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+    </script>
+</head>
+
+<body>
+    <div class="navbar bg-base-100">
+        <div class="navbar-start">
+        </div>
+        <div class="navbar-center">
+            <a class="btn btn-ghost text-xl">
+                <img class="w-8" src="https://svgshare.com/i/146f.svg" />
+                Translator
+            </a>
+        </div>
+        <div class="navbar-end">
+        </div>
+    </div>
+    <div id="translationForm" class="mx-auto">
+        <label class="form-control w-full max-w-xs mx-auto">
+            <div class="label">
+              <span class="label-text">Текст для перевода</span>
+            </div>
+            <input type="text" placeholder="..." id="inputText" class="input input-primary input-bordered w-full max-w-xs" />
+            <div class="form-control">
+                <label class="label cursor-pointer">
+                    <span class="label-text">Использовать AI</span> 
+                    <input type="checkbox" id="ai" name="ai" class="checkbox">
+                </label>
+                <label class="label cursor-pointer">
+                  <span class="label-text">С Эйорского</span> 
+                  <input type="checkbox" id="reverseCheckbox" name="reverseCheckbox" class="checkbox">
+                </label>
+                <label class="label cursor-pointer">
+                    <span class="label-text">Старий тип язика</span> 
+                    <input type="checkbox" id="oldType" name="oldType" class="checkbox">
+                </label>
+                <label class="label cursor-pointer">
+                    <span class="label-text">Дубовский язик</span> 
+                    <input type="checkbox" id="dub" name="dub" class="checkbox">
+                </label>
+                <button onClick="translation()" class="btn">Перевести</button>
+            </div>
+            <div id="result" class="mt-4 text-black dark:text-white ">
+            </div>
+        </label>
+        
+    </div>
+    
+</body>
+
+</html>
